@@ -276,10 +276,10 @@
 	
 	CGFloat lastGroupSidePadding = (newLastGroupWidth - lastGroupSize.width) / 2.0;
 	
-	  _cardNumberField.frame = CGRectMake((innerWidth / 2.0) - (cardNumberSize.width / 2.0),
-										  textFieldY,
-										  cardNumberSize.width,
-										  cardNumberSize.height);
+    _cardNumberField.frame = CGRectMake(13,
+                                        textFieldY,
+                                        cardNumberSize.width,
+                                        cardNumberSize.height);
 	
 	_cardLastFourField.frame = CGRectMake(CGRectGetMaxX(_cardNumberField.frame) - lastGroupSize.width,
 										  textFieldY,
