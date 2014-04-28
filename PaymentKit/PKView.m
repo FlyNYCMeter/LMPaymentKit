@@ -41,6 +41,9 @@
 - (void)checkValid;
 - (void)textFieldIsValid:(UITextField *)textField;
 - (void)textFieldIsInvalid:(UITextField *)textField withErrors:(BOOL)errors;
+
+@property (assign, nonatomic, readwrite) PKViewState state;
+
 @end
 
 @implementation PKView
@@ -133,7 +136,8 @@
 	
     isInitialState = YES;
     isValidState   = NO;
-    
+    self.state = PKViewStateCardNumber;
+
     [self setupPlaceholderView];
 	
 	self.innerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, self.frame.size.height)];
@@ -313,8 +317,26 @@
 
 // State
 
+- (void)changeToState:(PKViewState)state {
+    switch (state) {
+        case PKViewStateCardNumber: {
+            [self stateCardNumber];
+            break;
+        }
+        case PKViewStateCVC: {
+            [self stateCardCVC];
+            break;
+        }
+        case PKViewStateExpiry: {
+            [self stateMeta];
+            break;
+        }
+    }
+}
+
 - (void)stateCardNumber
 {
+    self.state = PKViewStateCardNumber;
 	if ([self.delegate respondsToSelector:@selector(paymentView:didChangeState:)]) {
 		[self.delegate paymentView:self didChangeState:PKViewStateCardNumber];
 	}
@@ -352,6 +374,7 @@
 
 - (void)stateMeta
 {
+    self.state = PKViewStateExpiry;
 	if ([self.delegate respondsToSelector:@selector(paymentView:didChangeState:)]) {
 		[self.delegate paymentView:self didChangeState:PKViewStateExpiry];
 	}
@@ -380,6 +403,7 @@
 
 - (void)stateCardCVC
 {
+    self.state = PKViewStateCVC;
 	if ([self.delegate respondsToSelector:@selector(paymentView:didChangeState:)]) {
 		[self.delegate paymentView:self didChangeState:PKViewStateCVC];
 	}

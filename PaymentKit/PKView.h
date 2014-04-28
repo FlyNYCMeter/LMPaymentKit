@@ -36,6 +36,8 @@ typedef enum {
 @interface PKView : UIView
 
 - (BOOL)isValid;
+- (void)changeToState:(PKViewState)state;
+@property (assign, nonatomic, readonly) PKViewState state;
 
 @property(nonatomic) UITextBorderStyle borderStyle;
 @property(nonatomic) PKViewImageStyle imageStyle;
