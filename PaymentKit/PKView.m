@@ -144,7 +144,9 @@
     self.innerView.clipsToBounds = YES;
 	
 	_cardLastFourField = [UITextField new];
-	_cardLastFourField.defaultTextAttributes = _defaultTextAttributes;
+    if ([_cardLastFourField respondsToSelector:@selector(setDefaultTextAttributes:)]) {
+        _cardLastFourField.defaultTextAttributes = _defaultTextAttributes;
+    }
 	_cardLastFourField.backgroundColor = self.backgroundColor;
 	
     [self setupCardNumberField];
@@ -176,7 +178,9 @@
 	textField.delegate = self;
     textField.placeholder = placeholder;
     textField.keyboardType = UIKeyboardTypeNumberPad;
-    textField.defaultTextAttributes = _defaultTextAttributes;
+    if ([textField respondsToSelector:@selector(setDefaultTextAttributes:)]) {
+        textField.defaultTextAttributes = _defaultTextAttributes;
+    }
 	textField.layer.masksToBounds = NO;
 	
 	return textField;
