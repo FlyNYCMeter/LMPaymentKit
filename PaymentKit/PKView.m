@@ -89,7 +89,9 @@
 	
 	NSArray *textFields = @[_cardNumberField, _cardExpiryField, _cardCVCField, _cardLastFourField];
     for (PKTextField *textField in textFields) {
-		textField.defaultTextAttributes = _defaultTextAttributes;
+        if ([textField respondsToSelector:@selector(setDefaultTextAttributes:)]) {
+            textField.defaultTextAttributes = _defaultTextAttributes;
+        }
 		textField.font = _defaultTextAttributes[NSFontAttributeName];
 		textField.textColor = _defaultTextAttributes[NSForegroundColorAttributeName];
 		textField.textAlignment = NSTextAlignmentLeft;
@@ -259,18 +261,41 @@
 	}
 	else {
 		if (self.cardNumber.cardType == PKCardTypeDinersClub) {
-			cardNumberSize = [@"1234 567890 1234" sizeWithAttributes:attributes];
+            if ([@"foo" respondsToSelector:@selector(sizeWithAttributes:)]) {
+                cardNumberSize = [@"1234 567890 1234" sizeWithAttributes:attributes];
+            } else {
+                cardNumberSize = [@"1234 567890 1234" sizeWithFont:attributes[NSFontAttributeName]];
+            }
 		}
 		else {
-			cardNumberSize = [_cardNumberField.placeholder sizeWithAttributes:attributes];
+            if ([@"foo" respondsToSelector:@selector(sizeWithAttributes:)]) {
+                cardNumberSize = [_cardNumberField.placeholder sizeWithAttributes:attributes];
+            } else {
+                cardNumberSize = [_cardNumberField.placeholder sizeWithFont:attributes[NSFontAttributeName]];
+            }
 		}
 		
-		lastGroupSize = [@"0000" sizeWithAttributes:attributes];
-		cvcSize = [_cardCVCField.placeholder sizeWithAttributes:attributes];
+        if ([@"foo" respondsToSelector:@selector(sizeWithAttributes:)]) {
+            lastGroupSize = [@"0000" sizeWithAttributes:attributes];
+        } else {
+            lastGroupSize = [@"0000" sizeWithFont:attributes[NSFontAttributeName]];
+        }
+        
+        if ([@"foo" respondsToSelector:@selector(sizeWithAttributes:)]) {
+            cvcSize = [_cardCVCField.placeholder sizeWithAttributes:attributes];
+        } else {
+            cvcSize = [_cardCVCField.placeholder sizeWithFont:attributes[NSFontAttributeName]];
+        }
 	}
 	
-	CGSize expirySize = [_cardExpiryField.placeholder sizeWithAttributes:attributes];
-	
+	CGSize expirySize;
+
+    if ([@"foo" respondsToSelector:@selector(sizeWithAttributes:)]) {
+        expirySize = [_cardExpiryField.placeholder sizeWithAttributes:attributes];
+    } else {
+        expirySize = [_cardExpiryField.placeholder sizeWithFont:attributes[NSFontAttributeName]];
+    }
+
 	CGFloat textFieldY = (self.frame.size.height - lastGroupSize.height) / 2.0;
 	
 	CGFloat totalWidth = lastGroupSize.width + expirySize.width + cvcSize.width;
