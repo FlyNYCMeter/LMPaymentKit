@@ -255,9 +255,15 @@
 	CGSize lastGroupSize, cvcSize, cardNumberSize;
 	
 	if (self.cardNumber.cardType == PKCardTypeAmex) {
-		cardNumberSize = [@"1234 567890 12345" sizeWithAttributes:attributes];
-		lastGroupSize = [@"00000" sizeWithAttributes:attributes];
-		cvcSize = [@"0000" sizeWithAttributes:attributes];
+        if ([@"foo" respondsToSelector:@selector(sizeWithAttributes:)]) {
+            cardNumberSize = [@"1234 567890 12345" sizeWithAttributes:attributes];
+            lastGroupSize = [@"00000" sizeWithAttributes:attributes];
+            cvcSize = [@"0000" sizeWithAttributes:attributes];
+        } else {
+            cardNumberSize = [@"1234 567890 12345" sizeWithFont:attributes[NSFontAttributeName]];
+            lastGroupSize = [@"00000" sizeWithFont:attributes[NSFontAttributeName]];
+            cvcSize = [@"0000" sizeWithFont:attributes[NSFontAttributeName]];
+        }
 	}
 	else {
 		if (self.cardNumber.cardType == PKCardTypeDinersClub) {
